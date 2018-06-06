@@ -33,28 +33,74 @@ op_data = {'^': [5 ,'right'] , '/': [4 , 'left'] ,'*': [3, 'left'] ,'+': [2 , 'l
 #        pop the operator from the operator stack onto the output queue.
         
 def precedence(operator):
-    return op_data[operator][0]
+    try:
+        return op_data[operator][0]
+    except:
+        return 0
 
-def assoc(opertaor):
-    return op_data[operator][1]
-                                  
+def assoc(operator):
+    try:
+        return op_data[operator][1]
+    except:
+        return 0
+
+def peek(stack):
+    try:
+        top = stack[-1]
+    except:
+        top = 0
+
+    return top 
+
+
+    
+
+
 while data:
     for token in data:
         try:
             if int(token):
                 output_queue.append(token)
         except:
-            while (precedence(operator_stack.peek()) > precedence(token)) or (precedence(operator_stack.peek()) == precedence(token) and assoc(token) == 'left') and (operator_stack.peek() != '('):
-                for x in len(operator_stack):
-                    output_queue.append(operator_stack.pop(0))
+            while (precedence(peek(operator_stack)) > precedence(token)) or (precedence(peek(operator_stack)) == precedence(token) and assoc(token) == 'left') and (peek(operator_stack) != '('):
+
+                for x in range(len(operator_stack)):
+                    output_queue.append(operator_stack.pop())
+            print('De Token' , token)
             operator_stack.append(token)
 
+        if token == '(':
+            operator_stack.append(token)
+        print('CHECK')
+
+        print(operator_stack)
+        print(output_queue)
+
+        if token == ')':
+            try:                  
+                while peek(operator_stack) != '(':
+                    output_queue.append(operator_stack.pop())
+            except:
+                print(' mismatched parentheses ' )
+                print(operator_stack)
+                print(output_queue)
+                quit()
+            operator_stack.pop()
+while len(operator_stack) != 0:
+    if peek(operator_stack) == '(' or peek(operator_stack) == ')':
+        print(' mismathced parentheses ' )
+        print(operator_stack)
+        print(output_queue)
+        quit()
+    output_queue.appened(operator_stack.pop())
 
 
             
+
+
+
             
-
-
+        
 
 
 
